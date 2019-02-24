@@ -1,0 +1,14 @@
+{
+    "type": "PACKAGE",
+    "language": "en",
+    "emailMessage": "",
+    "autoComplete": true,
+    "status": "SENT",
+    "roles": [],
+    "documents": [],
+    "settings": {
+        "ceremony": {
+            "documentVisibility": "signer"
+        }
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "signed": null,
+    "accepted": null,
+    "data": null,
+    "fields": [
+        {
+            "page": 0,
+            "subtype": "FULLNAME",
+            "width": 200,
+            "binding": null,
+            "extract": false,
+            "extractAnchor": null,
+            "left": 175,
+            "top": 165,
+            "validation": null,
+            "height": 50,
+            "data": null,
+            "type": "SIGNATURE",
+            "value": ""
+        }
+    ]
+}
