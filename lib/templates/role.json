@@ -1,0 +1,39 @@
+{
+    "locked": false,
+    "emailMessage": {
+        "content": ""
+    },
+    "attachmentRequirements": [],
+    "reassign": false,
+    "specialTypes": [],
+    "data": null,
+    "type": "SIGNER",
+    "index": 0,
+    "signers": [
+        {
+            "auth": {
+                "challenges": [],
+                "scheme": "NONE"
+            },
+            "company": "",
+            "phone": "",
+            "knowledgeBasedAuthentication": null,
+            "language": "en",
+            "title": "",
+            "external": null,
+            "professionalIdentityFields": [],
+            "userCustomFields": [],
+            "delivery": {
+                "email": true,
+                "provider": true,
+                "download": true
+            },
+            "group": null,
+            "signature": null,
+            "address": null,
+            "data": null,
+            "name": "",
+            "specialTypes": []
+        }
+    ]
+}
