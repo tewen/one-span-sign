@@ -32,6 +32,20 @@ const response = await client.createPackage(...); //See below for arguments here
 
 ### Methods
 
+#### getPackage()
+
+[One Span Documentation](https://docs.esignlive.com/content/c_integrator_s_guide/rest_api/packages.htm#Get)
+
+An existing package can be retrieved via the package id returned upon creation.
+
+```JavaScript
+const OneSpanClient = require('one-span-sign');
+
+const client = new OneSpanClient({apiKey: 'YOUR_KEY_HERE'});
+const response = await client.getPackage('PACKAGE_ID_HERE');
+```
+
+
 #### createPackage()
 
 [One Span Documentation](https://docs.esignlive.com/content/c_integrator_s_guide/rest_api/packages.htm#Create)
@@ -82,7 +96,6 @@ const response = await client.createPackage(
 
 ### Upcoming Additions
 
-* getPackage()
 * getPackages()
 * getPackageSigningUrl()
 * getPackageSigningStatus()

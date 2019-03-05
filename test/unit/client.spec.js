@@ -13,15 +13,20 @@ describe('client', function () {
   let Client;
   let client;
   let assemblePackage;
+  let oneSpanRequest;
   let oneSpanMultipartFormDataRequest;
 
   beforeEach(function () {
     sandbox = sinon.createSandbox();
 
     assemblePackage = sandbox.stub().returnsArg(0);
+    oneSpanRequest = sandbox.stub().resolves({ id: '25OR624-CC' });
     oneSpanMultipartFormDataRequest = sandbox.stub().resolves({ id: '25OR625' });
     Client = proxyquire('../../lib/client', {
-      './api/request': { oneSpanMultipartFormDataRequest },
+      './api/request': {
+        oneSpanRequest,
+        oneSpanMultipartFormDataRequest
+      },
       './api/package': assemblePackage
     });
 
@@ -48,8 +53,20 @@ describe('client', function () {
   });
 
   describe('getPackage()', function () {
-    it('should throw a NotImplementedError', function () {
-      expect(() => client.getPackage()).to.throw(NotImplementedError);
+    it('should call oneSpanRequest()', function () {
+      client.getPackage('25OR624-CC');
+      expect(oneSpanRequest).to.have.been.calledOnce;
+      expect(oneSpanRequest).to.have.been.calledWith({
+        method: 'GET',
+        route: '/packages/25OR624-CC',
+        apiKey: '25OR624',
+        sandbox: true
+      });
+    });
+
+    it('should return a promise that resolves from the result of oneSpanRequest()', async function () {
+      const response = await client.getPackage('25OR624-CC');
+      expect(response).to.eql({ id: '25OR624-CC' });
     });
   });
 

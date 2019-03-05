@@ -11,6 +11,7 @@ describe('api/request', function () {
   let requestLib;
   let requestHelpers;
   let request;
+  let requestPayload;
 
   beforeEach(function () {
     requestLib = sinon.stub().resolves(JSON.stringify({ id: '25OR624' }));
@@ -27,14 +28,56 @@ describe('api/request', function () {
   });
 
   describe('oneSpanRequest()', function () {
-    it('should throw a NotImplementedError', function () {
-      expect(() => request.oneSpanRequest({})).to.throw(NotImplementedError);
+    beforeEach(function () {
+      request.oneSpanRequest({
+        method: 'GET',
+        route: '/dots/sticks/bricks/78',
+        apiKey: '283FHJKH=',
+        sandbox: true
+      });
+      requestPayload = requestLib.args[0][0];
+    });
+
+    it('should call request with a GET method', function () {
+      expect(requestLib).to.have.been.calledOnce;
+      expect(requestPayload.method).to.equal('GET');
+    });
+
+    it('should apply the correct headers', function () {
+      expect(requestPayload.headers).to.eql({
+        Authorization: '283FHJKH=',
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      });
+    });
+
+    it('should call getAuthorization with the apiKey to set the Authorization within the request header', function () {
+      expect(requestHelpers.getAuthorization).to.have.been.calledOnce;
+      expect(requestHelpers.getAuthorization).to.have.been.calledWith('283FHJKH=');
+      expect(requestPayload.headers.Authorization).to.equal('283FHJKH=');
+    });
+
+    it('should call getRoute with the route and sandbox to set the uri within the request', function () {
+      expect(requestHelpers.getRoute).to.have.been.calledOnce;
+      expect(requestHelpers.getRoute).to.have.been.calledWith({
+        route: '/dots/sticks/bricks/78',
+        sandbox: true
+      });
+      expect(requestPayload.uri).to.equal('http://your.api.here/dots/sticks/bricks/78');
+    });
+
+    it('should return the parsed response of the request', async function () {
+      const response = await request.oneSpanRequest({
+        method: 'GET',
+        route: '/dots/sticks/bricks/78',
+        apiKey: '283FHJKH=',
+        sandbox: true
+      });
+      expect(response).to.eql({ id: '25OR624' });
     });
   });
 
   describe('oneSpanMultipartFormDataRequest()', function () {
-    let requestPayload;
-
     beforeEach(function () {
       request.oneSpanMultipartFormDataRequest({
         method: 'POST',
@@ -54,7 +97,7 @@ describe('api/request', function () {
       requestPayload = requestLib.args[0][0];
     });
 
-    it('should call request', function () {
+    it('should call request with a POST method', function () {
       expect(requestLib).to.have.been.calledOnce;
       expect(requestPayload.method).to.equal('POST');
     });
