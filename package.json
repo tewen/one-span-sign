@@ -1,6 +1,6 @@
 {
   "name": "one-span-sign",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Node module for the One Span E-Sign API.",
   "main": "index.js",
   "scripts": {
