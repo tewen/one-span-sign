@@ -1,0 +1,4 @@
+dev-setup.js
+test/
+.nvmrc
+.eslintrc
