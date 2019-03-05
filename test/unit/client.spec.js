@@ -5,7 +5,6 @@ const proxyquire = require('proxyquire');
 const { PACKAGES } = require('../../lib/api/one-span');
 const { Errors, Document, Field, Signer } = require('../../');
 const { InitializationError, NotImplementedError } = Errors;
-const request = require('../../lib/api/request');
 
 chai.use(require('sinon-chai'));
 

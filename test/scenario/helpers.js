@@ -3,8 +3,10 @@ function testEmail({ firstName, lastName }) {
 }
 
 function timeout(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));s
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-exports.testEmail = testEmail;
-exports.timeout = timeout;
+module.exports = {
+  testEmail,
+  timeout
+};

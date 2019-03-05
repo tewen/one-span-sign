@@ -1,4 +1,4 @@
-const { expect } = require('chai');
+const { expect } = require('chai'); // eslint-disable-line no-unused-vars
 
 describe('api/helpers/request', function () {
   describe('getAuthorization()', function () {
