@@ -71,8 +71,44 @@ describe('client', function () {
   });
 
   describe('getPackages()', function () {
-    it('should throw a NotImplementedError', function () {
-      expect(() => client.getPackages()).to.throw(NotImplementedError);
+    it('should call oneSpanRequest() with the default query {from: 0, to: 100}', function () {
+      client.getPackages();
+      expect(oneSpanRequest).to.have.been.calledOnce;
+      expect(oneSpanRequest).to.have.been.calledWith({
+        method: 'GET',
+        route: '/packages',
+        query: {
+          from: 0,
+          to: 100
+        },
+        apiKey: '25OR624',
+        sandbox: true
+      });
+    });
+
+    it('should be able to pass a query down to the oneSpanRequest()', function () {
+      client.getPackages({
+        red: 17,
+        green: true,
+        blue: 'hello'
+      });
+      expect(oneSpanRequest).to.have.been.calledOnce;
+      expect(oneSpanRequest).to.have.been.calledWith({
+        method: 'GET',
+        route: '/packages',
+        query: {
+          red: 17,
+          green: true,
+          blue: 'hello'
+        },
+        apiKey: '25OR624',
+        sandbox: true
+      });
+    });
+
+    it('should return a promise that resolves from the result of oneSpanRequest()', async function () {
+      const response = await client.getPackages('25OR624-CC');
+      expect(response).to.eql({ id: '25OR624-CC' });
     });
   });
 
