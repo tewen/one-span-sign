@@ -32,11 +32,11 @@ const response = await client.createPackage(...); //See below for arguments here
 
 ### Methods
 
-#### getPackage()
+#### getPackage(id)
 
 [One Span Documentation](https://docs.esignlive.com/content/c_integrator_s_guide/rest_api/packages.htm#Get)
 
-An existing package can be retrieved via the package id returned upon creation.
+An existing package can be retrieved via the package id returned after creation.
 
 ```JavaScript
 const OneSpanClient = require('one-span-sign');
@@ -46,7 +46,26 @@ const response = await client.getPackage('PACKAGE_ID_HERE');
 ```
 
 
-#### createPackage()
+#### getPackages([query])
+
+[One Span Documentation](https://docs.esignlive.com/content/c_integrator_s_guide/rest_api/packages.htm#Retrieve)
+
+An existing list of packages can be retrieved.
+
+```JavaScript
+const OneSpanClient = require('one-span-sign');
+
+const client = new OneSpanClient({apiKey: 'YOUR_KEY_HERE'});
+const response = await client.getPackages({sort: 'created'});
+
+/** 
+You can pass-in optional query params that are appended to the request
+The default query is {from: 0, to: 100}, which returns 100 packages
+*/
+```
+
+
+#### createPackage(package)
 
 [One Span Documentation](https://docs.esignlive.com/content/c_integrator_s_guide/rest_api/packages.htm#Create)
 

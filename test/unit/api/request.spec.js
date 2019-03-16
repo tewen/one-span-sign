@@ -66,6 +66,21 @@ describe('api/request', function () {
       expect(requestPayload.uri).to.equal('http://your.api.here/dots/sticks/bricks/78');
     });
 
+    it('should be able to call the request.oneSpanRequest() method with a query string attached to the route', function () {
+      request.oneSpanRequest({
+        method: 'GET',
+        route: '/dots/sticks/bricks/78',
+        query: {
+          red: true,
+          green: false
+        },
+        apiKey: '283FHJKH=',
+        sandbox: true
+      });
+      requestPayload = requestLib.args[1][0];
+      expect(requestPayload.uri).to.equal('http://your.api.here/dots/sticks/bricks/78?red=true&green=false');
+    });
+
     it('should return the parsed response of the request', async function () {
       const response = await request.oneSpanRequest({
         method: 'GET',
