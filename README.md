@@ -65,6 +65,31 @@ The default query is {from: 0, to: 100}, which returns 100 packages
 ```
 
 
+#### getPackageSigningUrl(id, roleOrSigner)
+
+[One Span Documentation](https://docs.esignlive.com/content/c_integrator_s_guide/rest_api/signing_url.htm?Highlight=signingUrl)
+
+Retrieves the signing url for a particular role.
+
+```JavaScript
+const OneSpanClient = require('one-span-sign');
+const { Signer } = OneSpanClient;
+
+const client = new OneSpanClient({apiKey: 'YOUR_KEY_HERE'});
+const responseA = await client.getPackageSigningUrl('PACKAGE_ID_HERE', 'ROLE_HERE');
+
+console.log(responseA.url); // Signing url
+
+/**
+  OR
+*/
+
+const responseB = await client.getPackageSigningUrl('PACKAGE_ID_HERE', new Signer({role: 'ROLE_HERE'}));
+
+console.log(responseB.url); // Signing url
+```
+
+
 #### createPackage(package)
 
 [One Span Documentation](https://docs.esignlive.com/content/c_integrator_s_guide/rest_api/packages.htm#Create)

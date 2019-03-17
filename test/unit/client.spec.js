@@ -113,8 +113,31 @@ describe('client', function () {
   });
 
   describe('getPackageSigningUrl()', function () {
-    it('should throw a NotImplementedError', function () {
-      expect(() => client.getPackageSigningUrl()).to.throw(NotImplementedError);
+    it('should call oneSpanRequest()', function () {
+      client.getPackageSigningUrl('=679278', 'Sous-chef');
+      expect(oneSpanRequest).to.have.been.calledOnce;
+      expect(oneSpanRequest).to.have.been.calledWith({
+        method: 'GET',
+        route: '/packages/=679278/roles/Sous-chef/signingUrl',
+        apiKey: '25OR624',
+        sandbox: true
+      });
+    });
+
+    it('should play nice with role provided in a Signer instance', function () {
+      client.getPackageSigningUrl('=679278', new Signer({ role: 'Head-chef' }));
+      expect(oneSpanRequest).to.have.been.calledOnce;
+      expect(oneSpanRequest).to.have.been.calledWith({
+        method: 'GET',
+        route: '/packages/=679278/roles/Head-chef/signingUrl',
+        apiKey: '25OR624',
+        sandbox: true
+      });
+    });
+
+    it('should return a promise that resolves from the result of oneSpanRequest()', async function () {
+      const response = await client.getPackageSigningUrl('=679278', 'Sous-chef');
+      expect(response).to.eql({ id: '25OR624-CC' });
     });
   });
 
