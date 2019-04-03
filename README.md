@@ -14,7 +14,9 @@ npm install --save one-span-sign
 In order to call the One Span Sign API, you will need to be setup wit an API Key. You will likely have both a sandbox API Key and a production API Key.
 
 
-##### Production
+##### Production (Default)
+The default API domain is 'apps.esignlive.com'. Documentation [here](https://docs.esignlive.com/content/c_integrator_s_guide/rest_api/rest_api.htm?Highlight=api%20url#The_API_URLs) for more info.
+
 ```JavaScript
 const OneSpanClient = require('one-span-sign');
 
@@ -22,11 +24,33 @@ const client = new OneSpanClient({apiKey: 'YOUR_KEY_HERE'});
 const response = await client.createPackage(...); //See below for arguments here
 ```
 
-##### Sandbox/Dev
+##### Production (Custom Domain)
+For alternative domains, see [here](https://docs.esignlive.com/content/c_integrator_s_guide/rest_api/rest_api.htm?Highlight=api%20url#The_API_URLs).
+
+```JavaScript
+const OneSpanClient = require('one-span-sign');
+
+const client = new OneSpanClient({apiKey: 'YOUR_KEY_HERE', domain: 'apps.e-signlive.ca'}); // Canadian domain, for example
+const response = await client.createPackage(...); //See below for arguments here
+```
+
+##### Sandbox/Dev (Default)
+The default API domain is 'sandbox.esignlive.com'. Documentation [here](https://docs.esignlive.com/content/c_integrator_s_guide/rest_api/rest_api.htm?Highlight=api%20url#The_API_URLs) for more info.
+
 ```JavaScript
 const OneSpanClient = require('one-span-sign');
 
 const client = new OneSpanClient({apiKey: 'YOUR_KEY_HERE', sandbox: true});
+const response = await client.createPackage(...); //See below for arguments here
+```
+
+##### Sandbox/Dev (Custom Domain)
+For alternative domains, see [here](https://docs.esignlive.com/content/c_integrator_s_guide/rest_api/rest_api.htm?Highlight=api%20url#The_API_URLs).
+
+```JavaScript
+const OneSpanClient = require('one-span-sign');
+
+const client = new OneSpanClient({apiKey: 'YOUR_KEY_HERE', sandbox: true, sandboxDomain: 'signer-sandbox-gov.esignlive.com'}); // Government domain, for example
 const response = await client.createPackage(...); //See below for arguments here
 ```
 
@@ -140,8 +164,6 @@ const response = await client.createPackage(
 
 ### Upcoming Additions
 
-* getPackages()
-* getPackageSigningUrl()
 * getPackageSigningStatus()
 * updatePackage()
 * deletePackage()

@@ -7,7 +7,8 @@ async function main() {
   if (process.env.SANDBOX_API_KEY) {
     const client = new Client({
       apiKey: process.env.SANDBOX_API_KEY,
-      sandbox: true
+      sandbox: true,
+      sandboxDomain: process.env.SANDBOX_DOMAIN
     });
 
     // File path version
