@@ -12,7 +12,8 @@ async function main() {
   if (process.env.SANDBOX_API_KEY) {
     const client = new Client({
       apiKey: process.env.SANDBOX_API_KEY,
-      sandbox: true
+      sandbox: true,
+      sandboxDomain: process.env.SANDBOX_DOMAIN
     });
 
     // File path version
@@ -61,47 +62,51 @@ async function main() {
     await timeout(2000);
 
     // File stream version
-    const responseB = await client.createPackage(
-      'Income Tax B',
-      'Read stream version of test',
-      new Document({
-        name: 'Income Tax Form',
-        file: fs.createReadStream(INCOME_TAX_FORM_PATH),
-        signatureFields: [
-          new Field({
-            name: 'sigPrep',
+    try {
+      const responseB = await client.createPackage(
+        'Income Tax B',
+        'Read stream version of test',
+        new Document({
+          name: 'Income Tax Form',
+          file: fs.createReadStream(INCOME_TAX_FORM_PATH),
+          signatureFields: [
+            new Field({
+              name: 'sigPrep',
+              role: 'Brazil',
+              template: { subtype: 'CAPTURE' }
+            }),
+            new Field({
+              name: 'f1-79',
+              role: 'Agentina'
+            })
+          ]
+        }),
+        [
+          new Signer({
             role: 'Brazil',
-            template: { subtype: 'CAPTURE' }
+            firstName: 'Kelly',
+            lastName: 'Sugar',
+            email: testEmail({
+              firstName: 'Kelly',
+              lastName: 'Sugar'
+            })
           }),
-          new Field({
-            name: 'f1-79',
-            role: 'Agentina'
+          new Signer({
+            role: 'Argentina',
+            firstName: 'Mitch',
+            lastName: 'Kooly',
+            email: testEmail({
+              firstName: 'Mitch',
+              lastName: 'Kooly'
+            })
           })
         ]
-      }),
-      [
-        new Signer({
-          role: 'Brazil',
-          firstName: 'Kelly',
-          lastName: 'Sugar',
-          email: testEmail({
-            firstName: 'Kelly',
-            lastName: 'Sugar'
-          })
-        }),
-        new Signer({
-          role: 'Argentina',
-          firstName: 'Mitch',
-          lastName: 'Kooly',
-          email: testEmail({
-            firstName: 'Mitch',
-            lastName: 'Kooly'
-          })
-        })
-      ]
-    );
-
-    console.log(responseB);
+      );
+      console.log(responseB);
+    } catch (e) {
+      console.error(e);
+      console.warn('This response is going to fail with a validation error, since we have not resolved the issue with file streams yet (https://github.com/tewen/one-span-sign/issues/2).');
+    }
   } else {
     console.error('Use the dev-setup.js script to set your sandbox API key in the environment.');
   }

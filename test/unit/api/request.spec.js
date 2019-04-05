@@ -33,7 +33,8 @@ describe('api/request', function () {
         method: 'GET',
         route: '/dots/sticks/bricks/78',
         apiKey: '283FHJKH=',
-        sandbox: true
+        sandbox: true,
+        sandboxDomain: 'sandbox.domain'
       });
       requestPayload = requestLib.args[0][0];
     });
@@ -61,7 +62,9 @@ describe('api/request', function () {
       expect(requestHelpers.getRoute).to.have.been.calledOnce;
       expect(requestHelpers.getRoute).to.have.been.calledWith({
         route: '/dots/sticks/bricks/78',
-        sandbox: true
+        sandbox: true,
+        sandboxDomain: 'sandbox.domain',
+        domain: undefined
       });
       expect(requestPayload.uri).to.equal('http://your.api.here/dots/sticks/bricks/78');
     });
@@ -107,7 +110,8 @@ describe('api/request', function () {
           name: 'Koolaid Contract'
         },
         apiKey: '62222HG',
-        sandbox: false
+        sandbox: false,
+        domain: 'production.domain'
       });
       requestPayload = requestLib.args[0][0];
     });
@@ -127,7 +131,9 @@ describe('api/request', function () {
       expect(requestHelpers.getRoute).to.have.been.calledOnce;
       expect(requestHelpers.getRoute).to.have.been.calledWith({
         route: '/red/green/blue',
-        sandbox: false
+        sandbox: false,
+        domain: 'production.domain',
+        sandboxDomain: undefined
       });
       expect(requestPayload.uri).to.equal('http://your.api.here/red/green/blue');
     });

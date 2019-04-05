@@ -40,16 +40,59 @@ describe('client', function () {
     sandbox.restore();
   });
 
-  it('should throw an error if constructed without an apiKey', function () {
-    expect(() => new Client({})).to.throw(InitializationError);
-  });
+  describe('constructor()', function() {
+    it('should throw an error if constructed without an apiKey', function () {
+      expect(() => new Client({})).to.throw(InitializationError);
+    });
 
-  it('should set the apiKey property on the instance', function () {
-    expect(client.apiKey).to.equal('25OR624');
-  });
+    it('should throw an error if the domain property is not a string', function () {
+      expect(() => new Client({apiKey: '25OR624', domain: 55})).to.throw(InitializationError);
+    });
 
-  it('should set the sandbox property on the instance if passed sandbox in the constructor', function () {
-    expect(client.sandbox).to.be.true;
+    it('should throw an error if the domain property is empty', function () {
+      expect(() => new Client({apiKey: '25OR624', domain: ''})).to.throw(InitializationError);
+    });
+
+    it('should throw an error if the sandboxDomain property is not a string, in sandbox mode', function () {
+      expect(() => new Client({apiKey: '25OR624', sandbox: true, sandboxDomain: {}})).to.throw(InitializationError);
+    });
+
+    it('should throw an error if the sandboxDomain property is empty, in sandbox mode', function () {
+      expect(() => new Client({apiKey: '25OR624', sandbox: true, sandboxDomain: ''})).to.throw(InitializationError);
+    });
+
+    it('should set the apiKey property on the instance', function () {
+      expect(client.apiKey).to.equal('25OR624');
+    });
+
+    it('should set the sandbox property on the instance if passed sandbox in the constructor', function () {
+      expect(client.sandbox).to.be.true;
+    });
+
+    it('should set the domain property on the instance', function () {
+      const myClient = new Client({
+        apiKey: '25OR624',
+        domain: 'production.domain'
+      });
+      expect(myClient.domain).to.equal('production.domain');
+    });
+
+    it('should set the sandboxDomain property on the instance', function () {
+      const myClient = new Client({
+        apiKey: '25OR624',
+        sandbox: true,
+        sandboxDomain: 'sandbox.domain'
+      });
+      expect(myClient.sandboxDomain).to.equal('sandbox.domain');
+    });
+
+    it('should set the domain property on the instance to apps.esignlive.com by default', function () {
+      expect(client.domain).to.equal('apps.esignlive.com');
+    });
+
+    it('should set the domain property on the instance to sandbox.esignlive.com', function () {
+      expect(client.sandboxDomain).to.equal('sandbox.esignlive.com');
+    });
   });
 
   describe('getPackage()', function () {
@@ -60,7 +103,9 @@ describe('client', function () {
         method: 'GET',
         route: '/packages/25OR624-CC',
         apiKey: '25OR624',
-        sandbox: true
+        sandbox: true,
+        domain: 'apps.esignlive.com',
+        sandboxDomain: 'sandbox.esignlive.com'
       });
     });
 
@@ -82,7 +127,9 @@ describe('client', function () {
           to: 100
         },
         apiKey: '25OR624',
-        sandbox: true
+        sandbox: true,
+        domain: 'apps.esignlive.com',
+        sandboxDomain: 'sandbox.esignlive.com'
       });
     });
 
@@ -102,7 +149,9 @@ describe('client', function () {
           blue: 'hello'
         },
         apiKey: '25OR624',
-        sandbox: true
+        sandbox: true,
+        domain: 'apps.esignlive.com',
+        sandboxDomain: 'sandbox.esignlive.com'
       });
     });
 
@@ -120,7 +169,9 @@ describe('client', function () {
         method: 'GET',
         route: '/packages/=679278/roles/Sous-chef/signingUrl',
         apiKey: '25OR624',
-        sandbox: true
+        sandbox: true,
+        domain: 'apps.esignlive.com',
+        sandboxDomain: 'sandbox.esignlive.com'
       });
     });
 
@@ -131,7 +182,9 @@ describe('client', function () {
         method: 'GET',
         route: '/packages/=679278/roles/Head-chef/signingUrl',
         apiKey: '25OR624',
-        sandbox: true
+        sandbox: true,
+        domain: 'apps.esignlive.com',
+        sandboxDomain: 'sandbox.esignlive.com'
       });
     });
 
@@ -197,7 +250,9 @@ describe('client', function () {
           signers
         },
         apiKey: '25OR624',
-        sandbox: true
+        sandbox: true,
+        domain: 'apps.esignlive.com',
+        sandboxDomain: 'sandbox.esignlive.com'
       });
     });
 
