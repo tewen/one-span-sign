@@ -17,9 +17,9 @@ async function main() {
     console.log(`Created sample package with id: ${id}`);
 
     // Change package status so that we are able to update pkg signers
-    await client.updatePackage(id, { status: Client.PACKAGE_STATUS.draft });
+    await client.updatePackage(id, { status: Client.PACKAGE_STATUS.DRAFT });
 
-    console.log(`Pkg status updated to ${Client.PACKAGE_STATUS.draft}`);
+    console.log(`Pkg status updated to ${Client.PACKAGE_STATUS.DRAFT}`);
 
     // Fetch the roles of the previously created Package
     const { roles } = await client.getPackage(id);

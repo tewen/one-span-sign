@@ -2,7 +2,12 @@ const chai = require("chai");
 const { expect } = chai;
 const sinon = require("sinon");
 const proxyquire = require("proxyquire");
-const { PACKAGES, DOCUMENTS, ROLES } = require("../../lib/api/one-span");
+const {
+  PACKAGES,
+  DOCUMENTS,
+  ROLES,
+  REMINDERS,
+} = require("../../lib/api/one-span");
 const { Errors, Document, Field, Signer } = require("../../");
 const { InitializationError, NotImplementedError } = Errors;
 
@@ -362,13 +367,42 @@ describe("client", function () {
     });
   });
 
-  describe("resendSigningInvitation()", function () {
+  describe("createReminders()", function () {
     it("should call oneSpanRequest()", function () {
-      client.resendSigningInvitation("25OR625", "25OR625-role-1");
+      client.createReminders("25OR625", {
+          startInDaysDelay: 2,
+          repetitionsCount: 4,
+          intervalInDays: 2,
+      });
       expect(oneSpanRequest).to.have.been.calledOnce;
       expect(oneSpanRequest).to.have.been.calledWith({
         method: "POST",
-        route: `${PACKAGES.ROUTE}/25OR625${ROLES.ROUTE}/25OR625-role-1/notifications`,
+        route: `${PACKAGES.ROUTE}/25OR625${REMINDERS.ROUTE}`,
+        body: {
+          packageId: '25OR625',
+          startInDaysDelay: 2,
+          repetitionsCount: 4,
+          intervalInDays: 2,
+        },
+        apiKey: "25OR624",
+        sandbox: true,
+        domain: "apps.esignlive.com",
+        sandboxDomain: "sandbox.esignlive.com",
+      });
+    });
+
+    it("should apply default reminders settings if no settings are provided", function () {
+      client.createReminders("25OR625");
+      expect(oneSpanRequest).to.have.been.calledOnce;
+      expect(oneSpanRequest).to.have.been.calledWith({
+        method: "POST",
+        route: `${PACKAGES.ROUTE}/25OR625${REMINDERS.ROUTE}`,
+        body: {
+          packageId: '25OR625',
+          startInDaysDelay: 1,
+          repetitionsCount: 5,
+          intervalInDays: 1,
+        },
         apiKey: "25OR624",
         sandbox: true,
         domain: "apps.esignlive.com",
@@ -377,14 +411,101 @@ describe("client", function () {
     });
 
     it("should return a promise that resolves from the result of oneSpanRequest()", async function () {
-      const response = await client.resendSigningInvitation(
-        "25OR625",
-        "25OR625-role-1"
-      );
+      const response = await client.createReminders("25OR625");
+      expect(response).to.eql({ id: "25OR624-CC" });
+    });
+  });
+  
+  describe("updateReminders()", function () {
+
+    it("should call oneSpanRequest()", function () {
+      client.updateReminders("25OR625", {
+          startInDaysDelay: 2,
+          repetitionsCount: 4,
+          intervalInDays: 2,
+      });
+      expect(oneSpanRequest).to.have.been.calledOnce;
+      expect(oneSpanRequest).to.have.been.calledWith({
+        method: "PUT",
+        route: `${PACKAGES.ROUTE}/25OR625${REMINDERS.ROUTE}`,
+        body: {
+          packageId: '25OR625',
+          startInDaysDelay: 2,
+          repetitionsCount: 4,
+          intervalInDays: 2,
+        },
+        apiKey: "25OR624",
+        sandbox: true,
+        domain: "apps.esignlive.com",
+        sandboxDomain: "sandbox.esignlive.com",
+      });
+    });
+
+    it("should apply default reminders settings if no settings are provided", function () {
+      client.updateReminders("25OR625");
+      expect(oneSpanRequest).to.have.been.calledOnce;
+      expect(oneSpanRequest).to.have.been.calledWith({
+        method: "PUT",
+        route: `${PACKAGES.ROUTE}/25OR625${REMINDERS.ROUTE}`,
+        body: {
+          packageId: '25OR625',
+          startInDaysDelay: 1,
+          repetitionsCount: 5,
+          intervalInDays: 1,
+        },
+        apiKey: "25OR624",
+        sandbox: true,
+        domain: "apps.esignlive.com",
+        sandboxDomain: "sandbox.esignlive.com",
+      });
+    });
+    
+    it("should return a promise that resolves from the result of oneSpanRequest()", async function () {
+      const response = await client.updateReminders("25OR625");
       expect(response).to.eql({ id: "25OR624-CC" });
     });
   });
 
+  describe("getReminders()", function () {
+    it("should call oneSpanRequest()", function () {
+      client.getReminders("25OR625");
+      expect(oneSpanRequest).to.have.been.calledOnce;
+      expect(oneSpanRequest).to.have.been.calledWith({
+        method: "GET",
+        route: `${PACKAGES.ROUTE}/25OR625${REMINDERS.ROUTE}`,
+        apiKey: "25OR624",
+        sandbox: true,
+        domain: "apps.esignlive.com",
+        sandboxDomain: "sandbox.esignlive.com",
+      });
+    });
+
+    it("should return a promise that resolves from the result of oneSpanRequest()", async function () {
+      const response = await client.getReminders("25OR625");
+      expect(response).to.eql({ id: "25OR624-CC" });
+    });
+  });
+
+  describe("deleteReminders()", function () {
+    it("should call oneSpanRequest()", function () {
+      client.deleteReminders("25OR625");
+      expect(oneSpanRequest).to.have.been.calledOnce;
+      expect(oneSpanRequest).to.have.been.calledWith({
+        method: "DELETE",
+        route: `${PACKAGES.ROUTE}/25OR625${REMINDERS.ROUTE}`,
+        apiKey: "25OR624",
+        sandbox: true,
+        domain: "apps.esignlive.com",
+        sandboxDomain: "sandbox.esignlive.com",
+      });
+    });
+
+    it("should return a promise that resolves from the result of oneSpanRequest()", async function () {
+      const response = await client.deleteReminders("25OR625");
+      expect(response).to.eql({ id: "25OR624-CC" });
+    });
+  });
+  
   describe("getDocument()", function () {
     it("should call oneSpanPDFRequest()", function () {
       client.getDocument("25OR625", "25OR625-pkg");
@@ -405,6 +526,29 @@ describe("client", function () {
     it("should return a promise that resolves from the result of oneSpanPDFRequest()", async function () {
       const response = await client.getDocument("25OR625", "25OR625-pkg");
       expect(response).to.eql(Buffer.from("25OR625-pkg-data"));
+    });
+  });
+
+  describe("resendSigningInvitation()", function () {
+    it("should call oneSpanRequest()", function () {
+      client.resendSigningInvitation("25OR625", "25OR625-role-1");
+      expect(oneSpanRequest).to.have.been.calledOnce;
+      expect(oneSpanRequest).to.have.been.calledWith({
+        method: "POST",
+        route: `${PACKAGES.ROUTE}/25OR625${ROLES.ROUTE}/25OR625-role-1/notifications`,
+        apiKey: "25OR624",
+        sandbox: true,
+        domain: "apps.esignlive.com",
+        sandboxDomain: "sandbox.esignlive.com",
+      });
+    });
+
+    it("should return a promise that resolves from the result of oneSpanRequest()", async function () {
+      const response = await client.resendSigningInvitation(
+        "25OR625",
+        "25OR625-role-1"
+      );
+      expect(response).to.eql({ id: "25OR624-CC" });
     });
   });
 
