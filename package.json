@@ -1,6 +1,6 @@
 {
   "name": "one-span-sign",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Node module for the One Span E-Sign API.",
   "main": "index.js",
   "scripts": {
@@ -33,7 +33,7 @@
     "es6-error": "^4.1.1",
     "fs-extra": "^7.0.1",
     "https": "^1.0.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.21",
     "mime": "^2.4.0",
     "qs": "^6.6.0",
     "request": "^2.88.0",
@@ -45,7 +45,7 @@
     "dotenv": "^6.2.0",
     "eslint": "^5.15.0",
     "eslint-plugin-node": "^8.0.1",
-    "mocha": "^6.0.1",
+    "mocha": "^8.3.0",
     "prompts": "^2.0.3",
     "proxyquire": "^2.1.0",
     "sinon": "^7.2.4",
