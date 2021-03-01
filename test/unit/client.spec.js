@@ -319,8 +319,34 @@ describe("client", function () {
   });
 
   describe("updatePackage()", function () {
-    it("should throw a NotImplementedError", function () {
-      expect(() => client.updatePackage()).to.throw(NotImplementedError);
+    it("should call oneSpanMultipartFormDataRequest()", async function () {
+      const packageId = '2240'
+      const body = {
+        status: PACKAGES.STATUS.DRAFT,
+      };
+      await client.updatePackage(
+        packageId,
+        body
+      );
+      expect(oneSpanRequest).to.have.been.calledOnce;
+      expect(oneSpanRequest).to.have.been.calledWith({
+        apiKey: "25OR624",
+        domain: "apps.esignlive.com",
+        method: "PUT",
+        route: "/packages/2240",
+        sandbox: true,
+        sandboxDomain: "sandbox.esignlive.com",
+        body,
+      });
+    });
+
+    it("should return a promise that resolves from the result of oneSpanMultipartFormDataRequest()", async function () {
+      const packageId = "2240";
+      const body = {
+        status: PACKAGES.STATUS.DRAFT,
+      };
+      const response = await client.updatePackage(packageId, body);
+      expect(response).to.eql({ id: "25OR624-CC" });
     });
   });
 
