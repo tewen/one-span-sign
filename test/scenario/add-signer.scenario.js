@@ -17,9 +17,9 @@ async function main() {
     console.log(`Created sample package with id: ${id}`);
 
     // Change package status so that we are able to update pkg signers
-    await client.updatePackage(id, { status: Client.PACKAGE_STATUS.draft });
+    await client.updatePackage(id, { status: Client.PACKAGE_STATUS.DRAFT });
 
-    console.log(`Pkg status updated to ${Client.PACKAGE_STATUS.draft}`);
+    console.log(`Pkg status updated to ${Client.PACKAGE_STATUS.DRAFT}`);
 
     const response = await client.addSigner(id, {
       // Id is optional but if defined then should be in uuid format otherwise remove key or set undefined 

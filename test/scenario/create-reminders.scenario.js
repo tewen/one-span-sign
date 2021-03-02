@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 const Client = require("../..");
-const { createPackage, testEmail } = require("./helpers");
+const { createPackage } = require("./helpers");
 
 async function main() {
   if (process.env.SANDBOX_API_KEY) {
@@ -14,23 +14,20 @@ async function main() {
     // File path version
     const { id } = await createPackage(client);
 
-    console.log(`Created sample package with id: ${id}`);
-
     // Change package status so that we are able to update pkg signers
     await client.updatePackage(id, { status: Client.PACKAGE_STATUS.DRAFT });
 
     console.log(`Pkg status updated to ${Client.PACKAGE_STATUS.DRAFT}`);
 
-    // Fetch the roles of the previously created Package
-    const { roles } = await client.getPackage(id);
+    console.log(`Created sample package with id: ${id}`);
 
-    const response = await client.updateSigner(id, roles[0].id, {
-      firstName: "John",
-      lastName: "Wick",
-      email: testEmail({ firstName: "john", lastName: "wick" }),
+    const response = await client.createReminders(id, {
+      intervalInDays: 2,
+      repetitionsCount: 3,
+      startInDaysDelay: 7,
     });
 
-    console.log("Signer updated");
+    console.log(`Created sample reminder for pkg : ${id}`);
     console.log(response);
   } else {
     console.error(
