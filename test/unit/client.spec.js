@@ -262,7 +262,8 @@ describe("client", function () {
         "Income Tax A",
         "File path version of test",
         document,
-        signers
+        signers,
+        PACKAGES.STATUS.DRAFT
       );
       expect(oneSpanMultipartFormDataRequest).to.have.been.calledOnce;
       expect(oneSpanMultipartFormDataRequest).to.have.been.calledWith({
@@ -274,6 +275,7 @@ describe("client", function () {
           description: "File path version of test",
           documents: [document],
           signers,
+          status: PACKAGES.STATUS.DRAFT,
         },
         apiKey: "25OR624",
         sandbox: true,

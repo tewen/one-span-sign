@@ -59,11 +59,15 @@ async function main() {
 
     console.log(responseA);
 
+    const responseB = await client.getPackage(responseA.id);
+
+    console.log(responseB);
+
     await timeout(2000);
 
     // File stream version
     try {
-      const responseB = await client.createPackage(
+      const responseC = await client.createPackage(
         'Income Tax B',
         'Read stream version of test',
         new Document({
@@ -102,7 +106,7 @@ async function main() {
           })
         ]
       );
-      console.log(responseB);
+      console.log(responseC);
     } catch (e) {
       console.error(e);
       console.warn('This response is going to fail with a validation error, since we have not resolved the issue with file streams yet (https://github.com/tewen/one-span-sign/issues/2).');
